@@ -1,7 +1,7 @@
 #include "WiFi.h"
 #include "PubSubClient.h"
 
-//SOPHISTICATED
+//SOPHISTICATED SECTION
 //  MQTT
 #define MQTT_CLIENT_ID "ESP32Client"
 #define DEVICE_ID "helmet1"
@@ -22,15 +22,17 @@
 #define MQTT_PORT 11714
 #define MQTT_USER "qeozciql"
 #define MQTT_PASSWORD "rL4GWKmt99KZ"
-#define MQTT_VIBRATION_TOPIC DEVICE_ID "/vibration/raw"
-#define MQTT_GAS_TOPIC DEVICE_ID "/gas/raw"
-#define MQTT_ACCELERATION_TOPIC DEVICE_ID "/acceleration/raw"
+#define MQTT_VIBRATION_TOPIC "/" DEVICE_ID "/vibration/raw"
+#define MQTT_GAS_TOPIC "/" DEVICE_ID "/gas/raw"
+#define MQTT_ACCELERATION_TOPIC "/" DEVICE_ID "/acceleration/raw"
 //  INPUTS
 #define ACCELERATION_X_INPUT 36
 #define ACCELERATION_Y_INPUT 39
 #define ACCELERATION_Z_INPUT 34
 #define VIBRATION_INPUT 32
 #define GAS_INPUT 35
+//GLOBAL SETTINGS
+#define VIBRATION_TIMEOUT 10000
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
@@ -79,7 +81,7 @@ float * readAcceleration() {
 }
 
 long readVibration() {
-  return pulseIn(VIBRATION_INPUT, HIGH);
+  return pulseIn(VIBRATION_INPUT, HIGH, VIBRATION_TIMEOUT);
 }
 
 int readGas() {
@@ -88,19 +90,19 @@ int readGas() {
 
 void loop() {
   mqttClient.loop();
-  static char buf[32];
+  static char buf[60];
   
   //ACCELERATION
   float * acceleration = readAcceleration();
-  sprintf(buf, "{\"x\":%.3f,\"y\":%.3f,\"z\":%.3f}", acceleration[0], acceleration[1], acceleration[2]);
+  sprintf(buf, "{\"type\": \"acceleration\", \"raw_value\": {\"x\": %.3f,\"y\": %.3f,\"z\": %.3f}}", acceleration[0], acceleration[1], acceleration[2]);
   mqttClient.publish(MQTT_ACCELERATION_TOPIC, buf);
   //GAS
   int gas = readGas();
-  sprintf(buf, "%d", gas);
+  sprintf(buf, "{\"type\": \"gas\", \"raw_value\": %d}", gas);
   mqttClient.publish(MQTT_GAS_TOPIC, buf);
   //VIBRATION
   long vibration = readVibration(); //has 1 second delay
-  sprintf(buf, "%ld", vibration);
+  sprintf(buf, "{\"type\": \"vibration\", \"raw_value\": %ld}", vibration);
   mqttClient.publish(MQTT_VIBRATION_TOPIC, buf);
   
   delay(1000);
