@@ -46,7 +46,7 @@ class MqttLocationPublisher implements MqttServicePublisher {
         })
         .listen((locationData) {
       var builder = MqttClientPayloadBuilder();
-      builder.addUTF8String('{\n'
+      builder.addUTF8String('{"type": "location", "raw_value": {\n'
           '"latitude": ${locationData.latitude},\n'
           '"longitude": ${locationData.longitude},\n'
           '"accuracy": ${locationData.accuracy},\n'
@@ -56,7 +56,7 @@ class MqttLocationPublisher implements MqttServicePublisher {
           '"heading": ${locationData.heading},\n'
           '"time": '
           '"${DateTime.fromMillisecondsSinceEpoch(locationData.time.toInt()).toIso8601String()}"\n'
-          '}');
+          '}}');
 
       _mqttClient.publishMessage(
           "$_helmetId/location/raw/json", MqttQos.exactlyOnce, builder.payload);
