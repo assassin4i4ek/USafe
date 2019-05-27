@@ -35,15 +35,10 @@ class MqttLocationPublisher implements MqttServicePublisher {
     if (!await location.serviceEnabled()) {
       if (!await location.requestService()) {
         throw PublisherException(MqttLocationPublisher.serviceDisabled);
-      } else {
-        print('aaa');
       }
     }
 
     _streamSubscription = location.onLocationChanged()
-        .handleError((e) {
-          print("a");
-        })
         .listen((locationData) {
       var builder = MqttClientPayloadBuilder();
       builder.addUTF8String('{"type": "location", "raw_value": {\n'
@@ -59,7 +54,7 @@ class MqttLocationPublisher implements MqttServicePublisher {
           '}}');
 
       _mqttClient.publishMessage(
-          "$_helmetId/location/raw/json", MqttQos.exactlyOnce, builder.payload);
+          "/$_helmetId/location/raw", MqttQos.exactlyOnce, builder.payload);
     });
 
     return true;

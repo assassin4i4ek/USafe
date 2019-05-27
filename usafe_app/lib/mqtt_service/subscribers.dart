@@ -18,6 +18,17 @@ class StatusLevelHelper {
         throw FormatException();
     }
   }
+
+  static String convertToString(StatusLevel statusLevel) {
+    switch (statusLevel) {
+      case StatusLevel.LOW:
+        return "low";
+      case StatusLevel.MEDIUM:
+        return "medium";
+      case StatusLevel.HIGH:
+        return "high";
+    }
+  }
 }
 
 class StatusInfo {
@@ -78,22 +89,22 @@ class MqttServiceSubscriber extends ServiceSubscriber {
     MqttServiceSubscriber subscriber;
     switch (serviceName) {
       case "gas":
-        subscriber = MqttServiceSubscriber._("Gas level", "$helmetId/gas/alert",
-            "$helmetId/gas/confirmations", mqttClient, "gas");
+        subscriber = MqttServiceSubscriber._("Gas level", "/$helmetId/gas/alert",
+            "/$helmetId/gas/confirmations", mqttClient, "gas");
         break;
       case "vibration":
         subscriber = MqttServiceSubscriber._(
             "Knock",
-            "$helmetId/vibration/alert",
-            "$helmetId/vibration/confirmations",
+            "/$helmetId/vibration/alert",
+            "/$helmetId/vibration/confirmations",
             mqttClient,
             "vibration");
         break;
       case "acceleration":
         subscriber = MqttServiceSubscriber._(
             "Movement",
-            "$helmetId/acceleration/alert",
-            "$helmetId/acceleration/confirmations",
+            "/$helmetId/acceleration/alert",
+            "/$helmetId/acceleration/confirmations",
             mqttClient,
             "acceleration");
         break;
@@ -160,7 +171,7 @@ class MqttServiceSubscriber extends ServiceSubscriber {
     MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addUTF8String('{'
         '"type": "${status.type}",'
-        '"level": "${status.level}",'
+        '"level": "${StatusLevelHelper.convertToString(status.level)}",'
         '"confirmation": "true"'
         '}');
     _mqttClient.publishMessage(
