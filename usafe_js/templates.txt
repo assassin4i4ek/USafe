@@ -20,7 +20,7 @@
 
 {
 	"type": "vibration",
-	"raw_value": 10000
+	"raw_value": 10001
 }
 
 /helmet1/location/raw
@@ -30,4 +30,56 @@
 	"raw_value": {
 
 	}
+}
+
+
+
+/helmet1/gas/alert
+
+{
+	"type": "gas",
+	"level": "medium",
+	"needs_confirmation": "true"
+}
+
+/helmet1/acceleration/alert
+
+{
+	"type": "acceleration",
+	"level": high,
+	"needs_confirmation": "false"
+}
+
+/helmet1/vibration/alert
+
+{
+	"type": "vibration",
+	"level": "medium",
+	"needs_confirmation": "true"
+}
+
+
+
+/helmet1/gas/confirmations
+
+{
+	"type": "gas",
+	"level": "medium",
+	"needs_confirmation": "true"
+}
+
+/helmet1/acceleration/confirmations
+
+{
+	"type": "acceleration",
+	"level": high,
+	"needs_confirmation": "true"
+}
+
+/helmet1/vibration/confirmations
+
+{
+	"type": "vibration",
+	"level": "medium",
+	"needs_confirmation": "true"
 }
