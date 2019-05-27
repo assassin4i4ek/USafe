@@ -7,6 +7,7 @@ const MQTT_CLIENT_ID = 'USafeServer';
 //requires
 var express = require('express');
 var mqtt = require('mqtt');
+var UsafeServiceProvider = require('./usafe-service');
 
 //mqtt client
 var mqttClient = mqtt.connect(MQTT_SERVER, {
@@ -16,13 +17,29 @@ var mqttClient = mqtt.connect(MQTT_SERVER, {
 	password: MQTT_PASSWORD
 });
 
-mqttClient.on('connect', () => {
-	const supportedTopics = [
+//app service
+const supportedTopics = [
 		'/+/vibration/raw',
 		'/+/gas/raw',
 		'/+/acceleration/raw',
-		'/+/location/raw/json'];
+		'/+/location/raw',
+		'/+/vibration/confirmations',
+		'/+/gas/confirmations',
+		'/+/acceleration/confirmations'];
+const topicRegexp = /^\/(.+)\/(vibration|gas|acceleration|location)\/(raw|confirmations)$/i;
 
+var serviceProvider = new UsafeServiceProvider();
+serviceProvider.on('gas', (helmetId, data) => {
+	mqttClient.publish(`/${helmetId}/gas/alert`, JSON.stringify(data), {qos: 2});
+});
+serviceProvider.on('acceleration', (helmetId, data) => {
+	mqttClient.publish(`/${helmetId}/acceleration/alert`, JSON.stringify(data), {qos: 0});
+});
+serviceProvider.on('vibration', (helmetId, data) => {
+	mqttClient.publish(`/${helmetId}/vibration/alert`, JSON.stringify(data), {qos: 0});
+});
+
+mqttClient.on('connect', () => {
 	mqttClient.subscribe(supportedTopics, {qos: 2}, (err, granted) => {
 		if (err) {
 			console.log(err);
@@ -32,18 +49,25 @@ mqttClient.on('connect', () => {
 	});
 });
 
-function processRawVibration(message) {
+mqttClient.on('message', (topic, message) => {
 	try {
-		var vibrationObj = JSON.parse(message.toString());
-		console.log(vibrationObj);
+		var [, helmetId, dataType, dataSource] = topic.match(topicRegexp);
+		var data = JSON.parse(message.toString());
+		
+		if (data['type'] != dataType) {
+			throw 'Invalid data type in topic ' + topic;
+		}	
+
+		if (dataSource == 'raw') {
+			serviceProvider.processRaw(helmetId, dataType, data);
+		}
+		else if (dataSource == 'confirmations') {
+			serviceProvider.confirmAlert(helmetId, dataType, data);
+		}
 	}
 	catch (err) {
-		conole.log('An error occured during decoding mqtt message', err);
+		console.log('An error occured during decoding mqtt message: ', err);
 	}
-}
-
-mqttClient.on('message', (topic, message) => {
-	
 });
 
 // //express server
