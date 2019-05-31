@@ -5,12 +5,13 @@ const MQTT_USER = 'qeozciql';
 const MQTT_PASSWORD = 'rL4GWKmt99KZ';
 const MQTT_CLIENT_ID = 'USafeServer';
 //requires
-var express = require('express');
-var mqtt = require('mqtt');
-var UsafeServiceProvider = require('./usafe-service');
+const express = require('express');
+const mqtt = require('mqtt');
+const UsafeServiceProvider = require('./usafe-service');
+const path = require('path');
 
 //mqtt client
-var mqttClient = mqtt.connect(MQTT_SERVER, {
+const mqttClient = mqtt.connect(MQTT_SERVER, {
 	port: MQTT_PORT, 
 	clientId: MQTT_CLIENT_ID,
 	username: MQTT_USER,
@@ -70,13 +71,13 @@ mqttClient.on('message', (topic, message) => {
 	}
 });
 
-// //express server
-// var app = express();
+//express server
+var app = express();
 
-// app.get('/', (req, res) => {
-// 	res.send('Helloworld');
-// });
+app.use(express.static(__dirname + '/../application'));
 
-// app.listen(8888, () => {
-// 	console.log('Port 8888');
-// });
+app.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname + '/../application/index.html'));
+});
+
+app.listen(8888);
