@@ -32,7 +32,7 @@
 #define VIBRATION_INPUT 32
 #define GAS_INPUT 35
 //GLOBAL SETTINGS
-#define VIBRATION_TIMEOUT 10000
+#define VIBRATION_TIMEOUT 1000000
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
