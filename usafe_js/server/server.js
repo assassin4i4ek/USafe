@@ -80,4 +80,4 @@ app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname + '/../application/index.html'));
 });
 
-app.listen(8888);
+app.listen(process.env.PORT || 8080);
