@@ -2,7 +2,7 @@
   "name": "usafe_js",
   "version": "1.0.0",
   "description": "",
-  "main": "usafe.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

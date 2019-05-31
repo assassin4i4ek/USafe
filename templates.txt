@@ -46,7 +46,7 @@
 
 {
 	"type": "acceleration",
-	"level": high,
+	"level": "high",
 	"needs_confirmation": "false"
 }
 
@@ -72,7 +72,7 @@
 
 {
 	"type": "acceleration",
-	"level": high,
+	"level": "high",
 	"needs_confirmation": "true"
 }
 
