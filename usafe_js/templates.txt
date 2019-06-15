@@ -1,36 +1,19 @@
 /helmet1/gas/raw
 
-{
-	"type": "gas",
-	"raw_value": 2000
-}
+{"type": "acceleration", "raw_value": {"x": -0.537,"y": -0.724,"z": 0.248}}
 
 /helmet1/acceleration/raw
 
-{
-	"type": "acceleration",
-	"raw_value": {
-		"x": 0.5,
-		"y": 0.6,
-		"z": 0.7,
-	}
-}
+{"type": "acceleration", "raw_value": {"x": -0.537,"y": -0.724,"z": 0.248}}
 
 /helmet1/vibration/raw
 
-{
-	"type": "vibration",
-	"raw_value": 10001
-}
+{"type": "vibration", "raw_value": 622}
 
 /helmet1/location/raw
 
-{
-	"type": "location",
-	"raw_value": {
+{"type": "location", "raw_value": { "latitude": 50.5116719, "longitude": 30.4127433, "accuracy": 16.0, "altitude": 0.0, "speed": 0.0, "speedAccuracy": null, "heading": 0.0, "time": "2019-06-03T16:10:26.800" }}
 
-	}
-}
 
 
 

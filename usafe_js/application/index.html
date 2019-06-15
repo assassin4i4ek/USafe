@@ -4,13 +4,16 @@
 	<title>USafe Monitor</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="app.js"></script>
-    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+  <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+  <link rel="stylesheet" type="text/css" href="./styles.css">
 </head>
 <body>
-    <a class="skiplink" href="#map">Go to map</a>
-    <div id="map" class="map" tabindex="0"></div>
-    <button id="zoom-out">Zoom out</button>
-    <button id="zoom-in">Zoom in</button>
+  <div class="row">
+    <div class="devices column">
+      
+    </div>
+  </div>
+    <!-- <div id="map" class="map" tabindex="0"></div>
     <script>
       var map = new ol.Map({
         layers: [
@@ -21,7 +24,7 @@
         target: 'map',
         controls: ol.control.defaults({
           attributionOptions: {
-            collapsible: false
+            collapsible: true
           }
         }),
         view: new ol.View({
@@ -29,18 +32,7 @@
           zoom: 2
         })
       });
+    </script> -->
 
-      document.getElementById('zoom-out').onclick = function() {
-        var view = map.getView();
-        var zoom = view.getZoom();
-        view.setZoom(zoom - 1);
-      };
-
-      document.getElementById('zoom-in').onclick = function() {
-        var view = map.getView();
-        var zoom = view.getZoom();
-        view.setZoom(zoom + 1);
-      };
-    </script>
 </body>
 </html>

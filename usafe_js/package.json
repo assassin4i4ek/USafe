@@ -1,11 +1,10 @@
 {
   "name": "usafe_js",
   "version": "1.0.0",
-  "description": "",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/test.js"
   },
   "engines": {
     "node": "10.15.3"
@@ -13,7 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.0",
-    "mqtt": "^2.18.8"
-  }
+    "express": "^4.17.1",
+    "mqtt": "^3.0.0",
+    "noble": "^1.9.1",
+    "noble-uwp": "^0.6.2",
+    "node-web-bluetooth": "0.0.8"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
 }

@@ -90,7 +90,7 @@ int readGas() {
 
 void loop() {
   mqttClient.loop();
-  static char buf[60];
+  static char buf[100];
   
   //ACCELERATION
   float * acceleration = readAcceleration();
